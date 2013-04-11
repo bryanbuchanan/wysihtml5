@@ -1,1 +1,3 @@
+h2. Changes
+
 * Allows relative urls in img src's and a href's
