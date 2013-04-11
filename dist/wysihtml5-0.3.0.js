@@ -5049,16 +5049,29 @@ wysihtml5.dom.parse = (function() {
   
   
   // ------------ attribute checks ------------ \\
+  // Changes per: http://stackoverflow.com/questions/11773820/wysihtml5-image-src-and-href-are-stripped
   var attributeCheckMethods = {
     url: (function() {
-      var REG_EXP = /^https?:\/\//i;
+      /* var REG_EXP = /^https?:\/\//i; */
       return function(attributeValue) {
-        if (!attributeValue || !attributeValue.match(REG_EXP)) {
+        /* if (!attributeValue || !attributeValue.match(REG_EXP)) {
           return null;
+        } */
+        if (!attributeValue) {
+        	return "";
         }
-        return attributeValue.replace(REG_EXP, function(match) {
+        /* return attributeValue.replace(REG_EXP, function(match) {
           return match.toLowerCase();
-        });
+        }); */
+        
+        var parser = document.createElement('a');
+		parser.href = attributeValue;
+
+		if (   parser.protocol == 'http:'
+			|| parser.protocol == 'https:'
+			|| parser.protocol == 'ftp:'
+		) return attributeValue;
+    
       };
     })(),
     
